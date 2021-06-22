@@ -36,27 +36,14 @@ export class SceneComponent implements AfterViewInit {
         return this.canvasRef.nativeElement;
     }
 
-    getClicked3DPoint(evt) {
-      console.log('clicccccckkkkkkkkk!');
-      // evt.preventDefault();
-
-      // mousePosition.x = ((evt.clientX - canvasPosition.left) / canvas.width) * 2 - 1;
-      // mousePosition.y = -((evt.clientY - canvasPosition.top) / canvas.height) * 2 + 1;
-
-      // rayCaster.setFromCamera(mousePosition, camera);
-      // var intersects = rayCaster.intersectObjects(scene.getObjectByName('MyObj_s').children, true);
-
-      // if (intersects.length > 0)
-      //     return intersects[0].point;
-  };
 
     private createScene() {
         this.scene = new THREE.Scene();
         this.scene.add(new THREE.AxisHelper(200));
 
         //add plane
-        const geometry = new THREE.PlaneGeometry( 400, 400, 0 );
-        const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+        const geometry = new THREE.PlaneGeometry( 400, 200, 0 );
+        const material = new THREE.MeshBasicMaterial( {color: 0xf0ff00, side: THREE.DoubleSide} );
         const plane = new THREE.Mesh( geometry, material );
         plane.rotateOnAxis(new THREE.Vector3( 1, 0, 0), THREE.Math.degToRad(90));
         this.scene.add( plane );
@@ -80,7 +67,7 @@ export class SceneComponent implements AfterViewInit {
         const size = 500;
         const divisions = 50;
 
-        this.grid = new THREE.GridHelper( size, divisions );
+        this.grid = new THREE.GridHelper( size, divisions, 0x0f0fff );
         this.scene.add( this.grid );
 
       // const wireframe = new THREE.WireframeGeometry( geometry );
@@ -91,10 +78,7 @@ export class SceneComponent implements AfterViewInit {
       // this.scene.add( line );
 
       const loader = new THREE.ColladaLoader();
-      loader.load('assets/model/x1014_boxcar.obj', this.onModelLoadingCompleted);
-      //loader.load('assets/model/multimaterial.dae', this.onModelLoadingCompleted);
-
-
+      loader.load('assets/model/multimaterial.dae', this.onModelLoadingCompleted);
     }
 
     private onModelLoadingCompleted(collada) {
@@ -193,9 +177,10 @@ export class SceneComponent implements AfterViewInit {
             //var intersects = raycaster.intersectObjects(this.grid);
             const geometry = new THREE.CubeGeometry(this.snap/1.2, this.snap/2, this.snap/2);
             const material = new THREE.MeshBasicMaterial({
-                    color: 0x000000,
+                    color: 0x0000FF,
                     wireframe: true,
-                    wireframeLinewidth: 2
+                    wireframeLinewidth: 2,
+                    side: THREE.DoubleSide
                 });
             const mesh = new THREE.Mesh(geometry, material);
             mesh.position.x = Math.round(i.point.x / this.snap) * this.snap;
@@ -203,7 +188,6 @@ export class SceneComponent implements AfterViewInit {
             mesh.position.z = 0;//Math.round(i.point.z / this.snap) * this.snap;
             this.scene.add(mesh);
             this.render();
-            return;
         });
 
 
